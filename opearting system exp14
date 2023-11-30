@@ -1,0 +1,28 @@
+#include <stdio.h>
+int main() {
+    int memory[] = {300, 600, 350, 200, 750, 125};
+    int processes[] = {115, 500, 358, 200, 375};
+    for (int i = 0; i < sizeof(memory) / sizeof(memory[0]); i++) {
+        printf("Partition %d: %d KB\n", i + 1, memory[i]);
+    }
+    printf("\nProcess Allocation using Worst-Fit:\n");
+    for (int i = 0; i < sizeof(processes) / sizeof(processes[0]); i++) {
+        int worst_fit = -1;
+        for (int j = 0; j < sizeof(memory) / sizeof(memory[0]); j++) {
+            if (memory[j] >= processes[i] && (worst_fit == -1 || memory[j] > memory[worst_fit])) {
+                worst_fit = j;
+            }
+        }
+        if (worst_fit != -1) {
+            printf("Process %d (%d KB) allocated to Partition %d\n", i + 1, processes[i], worst_fit + 1);
+            memory[worst_fit] -= processes[i];
+        } else {
+            printf("Process %d (%d KB) cannot be allocated\n", i + 1, processes[i]);
+        }
+    }
+    printf("\nRemaining Memory Partitions:\n");
+    for (int i = 0; i < sizeof(memory) / sizeof(memory[0]); i++) {
+        printf("Partition %d: %d KB\n", i + 1, memory[i]);
+    }
+    return 0;
+}
